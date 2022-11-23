@@ -1,0 +1,10 @@
+.add-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.label-form {
+  margin-left: 0.5rem;
+}

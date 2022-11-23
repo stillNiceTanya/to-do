@@ -2,7 +2,7 @@ import React from "react";
 import TodoListItem from "./TodoListItem";
 import "./TodoList.css";
 
-const TodoList = ({ todos }) => {
+const TodoList = ({ todos, onDeleted }) => {
   const elements = todos.map((item) => {
     const { id, ...otherItem } = item;
     return (
@@ -10,7 +10,10 @@ const TodoList = ({ todos }) => {
         key={id}
         className="list-group-item"
       >
-        <TodoListItem {...otherItem}></TodoListItem>
+        <TodoListItem
+          {...otherItem}
+          onDeleted={() => onDeleted(id)}
+        ></TodoListItem>
       </li>
     );
   });
