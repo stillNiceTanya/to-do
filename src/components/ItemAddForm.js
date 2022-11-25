@@ -2,23 +2,41 @@ import React, { Component } from "react";
 import "./ItemAddForm.css";
 
 class Imput extends Component {
+  state = {
+    label: "",
+  };
+  onLabelChange = (event) => {
+    this.setState({ label: event.target.value });
+  };
+
+  onSubmit = (event) => {
+    event.preventDefault();
+    this.props.onItemAdded(this.state.label);
+  };
   render() {
     return (
-      <form className="add-form">
+      <form
+        className="add-form"
+        onSubmit={this.onSubmit}
+      >
         <label>
-          Name:
+          {this.state.label}
           <input
             className="label-form"
+            onChange={this.onLabelChange}
             type="text"
             name="name"
+            placeholder="some task"
           />
         </label>
-        <input
-          type="submit"
+        <button
+          // type="submit"
           value="Submit"
           className="btn btn-outline-secondary"
-          onClick={() => this.props.onItemAdded("hihi")}
-        />
+          onClick={() => this.props.onItemAdded}
+        >
+          Add item
+        </button>
       </form>
     );
   }

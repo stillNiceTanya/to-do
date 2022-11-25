@@ -37,30 +37,16 @@ import "./TodoListItem.css";
 // };
 
 class TodoListItem extends Component {
-  state = {
-    done: false,
-    important: false,
-  };
-  // onLabelClick = () => this.setState({ done: true });
-
-  onLabelClick = () => {
-    this.setState((state) => {
-      return {
-        done: !state.done,
-      };
-    });
-  };
-
-  // onMarkImportant = () => this.setState({ important: true });
-  onMarkImportant = () => {
-    this.setState((state) => {
-      return { important: !state.important };
-    });
-  };
-
   render() {
-    const { label, onDeleted } = this.props;
-    const { done, important = false } = this.state;
+    const {
+      label,
+      onDeleted,
+      onToggleImportant,
+      onToggleDone,
+      done,
+      important,
+    } = this.props;
+
     let classNames = "todo-list-item";
     if (done) {
       classNames = classNames + " done";
@@ -73,7 +59,7 @@ class TodoListItem extends Component {
       <div className="todo-list-item d-flex justify-content-between">
         <>
           <span
-            onClick={this.onLabelClick}
+            onClick={onToggleDone}
             className={classNames}
           >
             {label}
@@ -82,7 +68,7 @@ class TodoListItem extends Component {
         <>
           {" "}
           <button
-            onClick={this.onMarkImportant}
+            onClick={onToggleImportant}
             type="button"
             className="btn btn-outline-success btn-sm float-right"
           >

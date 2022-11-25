@@ -10,12 +10,19 @@ class App extends Component {
 
   state = {
     todoData: [
-      { id: 1, label: "Drink Coffee", important: false },
-      { id: 2, label: "Smile for life", important: false },
-      { id: 3, label: "Do some staff", important: true },
-      { id: 4, label: "Do another staff", important: false },
+      this.createTodoItem("Drink Coffee"),
+      this.createTodoItem("Smile for life"),
+      this.createTodoItem("Do some staff"),
     ],
   };
+  createTodoItem(label) {
+    return {
+      label,
+      important: false,
+      id: this.maxId++,
+      done: false,
+    };
+  }
 
   deleteItem = (id) => {
     this.setState(({ todoData }) => {
@@ -30,12 +37,42 @@ class App extends Component {
     });
   };
 
+  onToggleImportant = (id) => {
+    this.setState(({ todoData }) => {
+      const idx = todoData.findIndex((el) => el.id === id);
+      const importantItem = todoData[idx];
+      const newItem = { ...importantItem, important: !importantItem.important };
+      const newArray = [
+        ...todoData.slice(0, idx),
+        newItem,
+        ...todoData.slice(idx + 1),
+      ];
+
+      return {
+        todoData: newArray,
+      };
+    });
+  };
+
+  onToggleDone = (id) => {
+    this.setState(({ todoData }) => {
+      const idx = todoData.findIndex((el) => el.id === id);
+      const oldItem = todoData[idx];
+      const newItem = { ...oldItem, done: !oldItem.done };
+      const newArray = [
+        ...todoData.slice(0, idx),
+        newItem,
+        ...todoData.slice(idx + 1),
+      ];
+
+      return {
+        todoData: newArray,
+      };
+    });
+  };
+
   addItem = (text) => {
-    const newItem = {
-      label: text,
-      important: false,
-      id: this.maxId++,
-    };
+    const newItem = this.createTodoItem(text);
     this.setState(({ todoData }) => {
       const res = [...todoData, newItem];
       return {
@@ -45,13 +82,21 @@ class App extends Component {
   };
 
   render() {
+    const { todoData } = this.state;
+    const doneCount = todoData.filter((el) => el.done).length;
+    const todoCount = todoData.length - doneCount;
     return (
       <div className="container">
-        <AppHeader></AppHeader>
+        <AppHeader
+          toDo={todoCount}
+          done={doneCount}
+        ></AppHeader>
         <SearchPanel></SearchPanel>
         <ItemStatusFilter></ItemStatusFilter>
         <TodoList
-          todos={this.state.todoData}
+          onToggleImportant={this.onToggleImportant}
+          onToggleDone={this.onToggleDone}
+          todos={todoData}
           onDeleted={this.deleteItem}
         ></TodoList>
         <Imput onItemAdded={this.addItem}></Imput>
