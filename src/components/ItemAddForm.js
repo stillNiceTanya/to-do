@@ -12,6 +12,7 @@ class Imput extends Component {
   onSubmit = (event) => {
     event.preventDefault();
     this.props.onItemAdded(this.state.label);
+    this.setState({ label: "" });
   };
   render() {
     return (
@@ -20,13 +21,14 @@ class Imput extends Component {
         onSubmit={this.onSubmit}
       >
         <label>
-          {this.state.label}
+          Add your task
           <input
             className="label-form"
             onChange={this.onLabelChange}
             type="text"
             name="name"
             placeholder="some task"
+            value={this.state.label}
           />
         </label>
         <button
